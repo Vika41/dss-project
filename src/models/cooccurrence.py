@@ -29,7 +29,7 @@ def get_popularity(playlists):
             pop[track['track_uri']] += 1
     return pop
 
-def predict(seed_tracks, co_matrix, popularity, top_k=100):
+def predict(seed_tracks, co_matrix, popularity, top_k=100, pid=None):
     scores = Counter()
     for track in seed_tracks:
         if isinstance(track, str):
@@ -37,6 +37,15 @@ def predict(seed_tracks, co_matrix, popularity, top_k=100):
     for track in popularity:
         scores[track] += 0.1 * popularity[track]
     return [t for t, _ in scores.most_common(top_k)]
+
+def batch_predict(playlists, co_matrix, popularity, top_k=100):
+    results = []
+    for playlist in playlists:
+        seed_tracks = [t['track_uri'] for t in playlist['tracks']]
+        pid = playlist['pid']
+        result = predict(seed_tracks, co_matrix, popularity, top_k, pid)
+        results.append(result)
+    return results
 
 def predict_next_tracks(seed_tracks, co_matrix, popularity, top_k=100):
     scores = defaultdict(float)
