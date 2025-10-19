@@ -32,7 +32,8 @@ def get_popularity(playlists):
 def predict(seed_tracks, co_matrix, popularity, top_k=100):
     scores = Counter()
     for track in seed_tracks:
-        scores.update(co_matrix.get(track, {}))
+        if isinstance(track, str):
+            scores.update(co_matrix.get(track, {}))
     for track in popularity:
         scores[track] += 0.1 * popularity[track]
     return [t for t, _ in scores.most_common(top_k)]
@@ -43,6 +44,6 @@ def predict_next_tracks(seed_tracks, co_matrix, popularity, top_k=100):
         for co_track, weight in co_matrix[track].items():
             scores[co_track] += weight
     for track in popularity:
-        scores[track] += 0.1 * popularity[track]  # small boost
+        scores[track] += 0.1 * popularity[track]
     ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     return [track for track, _ in ranked[:top_k]]
