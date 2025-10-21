@@ -1,7 +1,5 @@
 import random
 
-from src.models.cooccurrence import predict
-
 def get_seed(playlist, category):
     tracks = [t['track_uri'] for t in playlist['tracks']]
     title = playlist.get('name', '').strip()
@@ -28,7 +26,3 @@ def get_seed(playlist, category):
         return random.sample(tracks, min(100, len(tracks))), title
     else:
         raise ValueError(f"Unknown category: {category}")
-
-def predict_challenge(playlist, category, co_matrix, popularity, top_k=100):
-    seed_tracks, title = get_seed(playlist, category)
-    return predict(seed_tracks, co_matrix, popularity, top_k)

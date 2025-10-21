@@ -11,7 +11,8 @@ def get_cf_scores(model, user_vec, reverse_track_ids):
     return {reverse_track_ids[i]: score for i, score in recs}
 
 def get_cbf_scores(seed_tracks, track_features):
-    seed_vecs = track_features.loc[track_features.index.intersection(seed_tracks)]
+    flat_seed_tracks = [track for sublist in seed_tracks for track in sublist]
+    seed_vecs = track_features.loc[track_features.index.intersection(flat_seed_tracks)]
     if seed_vecs.empty:
         return {}
     mean_vec = seed_vecs.mean().values.reshape(1, -1)

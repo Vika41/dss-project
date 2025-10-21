@@ -3,6 +3,8 @@ import os
 
 from collections import defaultdict, Counter
 
+from src.utils.getseed import get_seed
+
 def load_playlists(json_dir):
     playlists = []
     for fname in os.listdir(json_dir):
@@ -56,3 +58,7 @@ def predict_next_tracks(seed_tracks, co_matrix, popularity, top_k=100):
         scores[track] += 0.1 * popularity[track]
     ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     return [track for track, _ in ranked[:top_k]]
+
+def predict_challenge(playlist, category, co_matrix, popularity, top_k=100):
+    seed_tracks, title = get_seed(playlist, category)
+    return predict(seed_tracks, co_matrix, popularity, top_k)
