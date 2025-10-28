@@ -1,18 +1,6 @@
-import json
-import os
-
 from collections import defaultdict, Counter
 
 from src.utils.getseed import get_seed
-
-def load_playlists(json_dir):
-    playlists = []
-    for fname in os.listdir(json_dir):
-        if fname.endswith('.json'):
-            with open(os.path.join(json_dir, fname)) as f:
-                data = json.load(f)
-                playlists.extend(data['playlists'])
-    return playlists
 
 def build_co_matrix(playlists):
     co_matrix = defaultdict(Counter)

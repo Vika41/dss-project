@@ -26,7 +26,7 @@ def build_track_features(json_dir):
                     meta["artist_name"] = track["artist_name"]
                     meta["album_name"] = track["album_name"]
                     meta["duration_ms"].append(track["duration_ms"])
-                    meta["positions"].append(track.get("track_position", None))
+                    meta["positions"].append(track.get("pos", None))
                     meta["playlist_count"] += 1
 
     rows = []
